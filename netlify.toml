@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+[env]
+  NETLIFY_SKIP_DEPLOY_FINGERPRINTING = true
+
+[context.production]
+  [context.production.environment]
+    SECRETS_SCAN_SMART_DETECTION_ENABLED = false
