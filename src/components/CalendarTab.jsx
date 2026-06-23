@@ -34,12 +34,11 @@ export default function CalendarTab({ data }) {
   const renderCalendarGrid = () => {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
     const weeks = 4;
-    let dayIndex = 0;
     const cells = [];
 
     for (let week = 0; week < weeks; week++) {
       for (let day = 0; day < 5; day++) {
-        dayIndex++;
+        const dayIndex = (week * 5) + day + 1;
         const dayName = days[day];
         const dateOffset = (week * 7) + (day + 1);
         const date = new Date(2026, 5, 23 + dateOffset);
@@ -48,7 +47,10 @@ export default function CalendarTab({ data }) {
         const postsOnDay = posts.filter(p => p.scheduledDay === dayIndex);
 
         cells.push(
-          <div key={dayIndex} className="calendar-day" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, dayIndex)}>
+          <div key={dayIndex} className="calendar-day" onDragOver={handleDragOver} onDrop={(e) => {
+            e.preventDefault();
+            handleDrop(e, dayIndex);
+          }}>
             <div className="calendar-day-header">{dayName}</div>
             <div className="calendar-day-date">{dateStr}</div>
             <div className="calendar-slots">
