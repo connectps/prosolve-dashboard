@@ -1,0 +1,597 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background-color: #fffdf1;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+}
+
+header {
+  background-color: #001323;
+  border-bottom: 2px solid #30cfe5;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  background-color: #30cfe5;
+  border-radius: 8px;
+}
+
+header h1 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+header span {
+  color: #999;
+  font-size: 0.875rem;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+aside {
+  width: 200px;
+  border-right: 1px solid #e0e0e0;
+  padding: 1rem;
+  background-color: white;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  background-color: transparent;
+  color: #333;
+}
+
+.nav-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.nav-btn.active {
+  background-color: #30cfe5;
+  color: #001323;
+}
+
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.main-view {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  background-color: #fffdf1;
+}
+
+.main-view h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Insights Grid */
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.insight-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border-left: 4px solid #30cfe5;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.insight-card:hover {
+  box-shadow: 0 4px 12px rgba(48, 207, 229, 0.1);
+  transform: translateY(-2px);
+}
+
+.insight-label {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.insight-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #30cfe5;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.insight-change {
+  font-size: 0.75rem;
+  color: #22c55e;
+  margin-bottom: 1rem;
+}
+
+.view-report-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #30cfe5;
+  border: none;
+  border-radius: 6px;
+  color: #001323;
+  font-weight: 600;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-report-btn:hover {
+  background-color: #009db7;
+}
+
+/* Calendar */
+.calendar-container {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 1.5rem;
+  height: calc(100vh - 200px);
+}
+
+.calendar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.add-post-btn {
+  padding: 0.75rem 1rem;
+  background-color: #30cfe5;
+  border: none;
+  border-radius: 8px;
+  color: #001323;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+  width: fit-content;
+}
+
+.add-post-btn:hover {
+  background-color: #009db7;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.calendar-day {
+  background-color: white;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  padding: 0.75rem;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.calendar-day-header {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #30cfe5;
+}
+
+.calendar-day-date {
+  font-size: 0.75rem;
+  color: #999;
+  margin-bottom: 0.75rem;
+}
+
+.calendar-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.calendar-slot {
+  flex: 1;
+  background-color: #f9f9f9;
+  border: 2px dashed #e0e0e0;
+  border-radius: 6px;
+  padding: 0.5rem;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.calendar-slot:hover {
+  border-color: #30cfe5;
+  background-color: #f0f9fb;
+}
+
+.calendar-post-card {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 4px;
+  border-left: 3px solid #30cfe5;
+  cursor: grab;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  font-size: 0.7rem;
+}
+
+.calendar-post-card:hover {
+  box-shadow: 0 2px 6px rgba(48, 207, 229, 0.2);
+  cursor: grabbing;
+}
+
+.calendar-post-card.dragging {
+  opacity: 0.5;
+}
+
+.calendar-post-headline {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.calendar-post-tag {
+  display: inline-block;
+  padding: 0.15rem 0.35rem;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: white;
+  margin-top: 0.25rem;
+}
+
+/* Copy Panel */
+.copy-panel {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 2px solid #30cfe5;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(48, 207, 229, 0.15);
+  overflow-y: auto;
+}
+
+.copy-panel-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 0.875rem;
+  height: 100%;
+}
+
+.copy-panel-header {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.copy-variation {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.copy-variation:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.copy-angle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #30cfe5;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.copy-text {
+  font-size: 0.85rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Intelligence */
+.intelligence-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.intel-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border-left: 4px solid #30cfe5;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.intel-title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.intel-metric {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #30cfe5;
+  margin-bottom: 0.25rem;
+}
+
+.intel-label {
+  font-size: 0.75rem;
+  color: #999;
+  margin-bottom: 1rem;
+}
+
+.intel-content {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Kanban */
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.kanban-column {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 1rem;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.kanban-header {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.kanban-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.kanban-card {
+  padding: 0.75rem;
+  background-color: white;
+  border-radius: 6px;
+  border-left: 4px solid #30cfe5;
+  cursor: move;
+  font-size: 0.75rem;
+  transition: box-shadow 0.2s;
+}
+
+.kanban-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.kanban-card.dragging {
+  opacity: 0.5;
+}
+
+.kanban-card-headline {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.kanban-card-engagement {
+  color: #30cfe5;
+  font-size: 0.7rem;
+}
+
+/* Category colors */
+.cat-events { background-color: #3b82f6; }
+.cat-thought-leadership { background-color: #009db7; }
+.cat-pol { background-color: #f492bb; }
+.cat-pd { background-color: #ffc943; color: #333; }
+.cat-afterschool { background-color: #f97316; }
+.cat-school-day { background-color: #1e40af; }
+.cat-product { background-color: #22c55e; }
+
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: white;
+}
+
+/* Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-close {
+  float: right;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1.5rem;
+  clear: both;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #30cfe5;
+  box-shadow: 0 0 0 2px rgba(48, 207, 229, 0.1);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.modal-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-btn-primary {
+  background-color: #30cfe5;
+  color: #001323;
+}
+
+.modal-btn-primary:hover {
+  background-color: #009db7;
+}
+
+.modal-btn-secondary {
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.modal-btn-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+@media (max-width: 1200px) {
+  .calendar-container {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .kanban-board {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
