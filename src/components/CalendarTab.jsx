@@ -5,6 +5,9 @@ export default function CalendarTab({ data }) {
   const [selectedPost, setSelectedPost] = useState(null);
   const [showAddPost, setShowAddPost] = useState(false);
   const [draggedCard, setDraggedCard] = useState(null);
+  const [newPostHeadline, setNewPostHeadline] = useState('');
+  const [newPostCategory, setNewPostCategory] = useState('');
+  const [newPostCopy, setNewPostCopy] = useState('');
 
   useEffect(() => {
     setPosts(data || []);
@@ -34,11 +37,12 @@ export default function CalendarTab({ data }) {
   const renderCalendarGrid = () => {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
     const weeks = 4;
+    let dayIndex = 0;
     const cells = [];
 
     for (let week = 0; week < weeks; week++) {
       for (let day = 0; day < 5; day++) {
-        const dayIndex = (week * 5) + day + 1;
+        dayIndex++;
         const dayName = days[day];
         const dateOffset = (week * 7) + (day + 1);
         const date = new Date(2026, 5, 23 + dateOffset);
@@ -47,10 +51,7 @@ export default function CalendarTab({ data }) {
         const postsOnDay = posts.filter(p => p.scheduledDay === dayIndex);
 
         cells.push(
-          <div key={dayIndex} className="calendar-day" onDragOver={handleDragOver} onDrop={(e) => {
-            e.preventDefault();
-            handleDrop(e, dayIndex);
-          }}>
+          <div key={dayIndex} className="calendar-day" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, dayIndex)}>
             <div className="calendar-day-header">{dayName}</div>
             <div className="calendar-day-date">{dateStr}</div>
             <div className="calendar-slots">
@@ -120,6 +121,33 @@ export default function CalendarTab({ data }) {
     );
   };
 
+  const saveNewPost = () => {
+    if (newPostHeadline && newPostCategory && newPostCopy) {
+      // Create 3 copy variations from the input
+      const newPost = {
+        id: Math.max(...posts.map(p => p.id), 0) + 1,
+        headline: newPostHeadline,
+        category: newPostCategory,
+        theme: 'User-created post',
+        scheduledDay: null,
+        copies: [
+          { angle: 'Original', text: newPostCopy },
+          { angle: 'Educator-first', text: newPostCopy },
+          { angle: 'Bold', text: newPostCopy }
+        ]
+      };
+      
+      setPosts([...posts, newPost]);
+      setShowAddPost(false);
+      setNewPostHeadline('');
+      setNewPostCategory('');
+      setNewPostCopy('');
+      alert('✅ Post created! Drag it to a calendar day to schedule it.');
+    } else {
+      alert('Please fill in all fields');
+    }
+  };
+
   return (
     <div>
       <h3>Weekly Post Calendar</h3>
@@ -142,11 +170,16 @@ export default function CalendarTab({ data }) {
             <div className="modal-title">Create New Post</div>
             <div className="form-group">
               <label>Post Headline</label>
-              <input type="text" placeholder="Enter post headline" />
+              <input 
+                type="text" 
+                placeholder="Enter post headline"
+                value={newPostHeadline}
+                onChange={(e) => setNewPostHeadline(e.target.value)}
+              />
             </div>
             <div className="form-group">
               <label>Category</label>
-              <select>
+              <select value={newPostCategory} onChange={(e) => setNewPostCategory(e.target.value)}>
                 <option value="">Select a category</option>
                 <option value="product">Product</option>
                 <option value="thought-leadership">Thought Leadership</option>
@@ -158,12 +191,25 @@ export default function CalendarTab({ data }) {
               </select>
             </div>
             <div className="form-group">
-              <label>Theme/Topic</label>
-              <input type="text" placeholder="What is this post about?" />
+              <label>Copy Text</label>
+              <textarea 
+                placeholder="Write your copy here. This will be used for all 3 copy variations."
+                value={newPostCopy}
+                onChange={(e) => setNewPostCopy(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  border: '1px solid #e0e0e0',
+                  borderRadius: '6px',
+                  fontSize: '0.875rem',
+                  fontFamily: 'inherit',
+                  minHeight: '100px'
+                }}
+              />
             </div>
             <div className="modal-buttons">
               <button className="modal-btn modal-btn-secondary" onClick={() => setShowAddPost(false)}>Cancel</button>
-              <button className="modal-btn modal-btn-primary" onClick={() => { setShowAddPost(false); alert('Post created!'); }}>Create Post</button>
+              <button className="modal-btn modal-btn-primary" onClick={saveNewPost}>Create Post</button>
             </div>
           </div>
         </div>
