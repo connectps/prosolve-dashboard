@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { database, ref, set } from '../firebase';
 
 export default function CalendarTab({ data }) {
   const [posts, setPosts] = useState(data || []);
@@ -8,6 +9,7 @@ export default function CalendarTab({ data }) {
   const [newPostHeadline, setNewPostHeadline] = useState('');
   const [newPostCategory, setNewPostCategory] = useState('');
   const [newPostCopy, setNewPostCopy] = useState('');
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     setPosts(data || []);
@@ -31,6 +33,18 @@ export default function CalendarTab({ data }) {
       );
       setPosts(updated);
       setDraggedCard(null);
+    }
+  };
+
+  const saveToFirebase = async () => {
+    setSaving(true);
+    try {
+      await set(ref(database, 'calendar'), posts);
+      alert('✅ Posts saved to Firebase!');
+    } catch (error) {
+      alert('❌ Error saving to Firebase: ' + error.message);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -123,7 +137,6 @@ export default function CalendarTab({ data }) {
 
   const saveNewPost = () => {
     if (newPostHeadline && newPostCategory && newPostCopy) {
-      // Create 3 copy variations from the input
       const newPost = {
         id: Math.max(...posts.map(p => p.id), 0) + 1,
         headline: newPostHeadline,
@@ -142,7 +155,7 @@ export default function CalendarTab({ data }) {
       setNewPostHeadline('');
       setNewPostCategory('');
       setNewPostCopy('');
-      alert('✅ Post created! Drag it to a calendar day to schedule it.');
+      alert('✅ Post created! Drag it to a calendar day, then click "Save Posts" to save permanently.');
     } else {
       alert('Please fill in all fields');
     }
@@ -151,9 +164,20 @@ export default function CalendarTab({ data }) {
   return (
     <div>
       <h3>Weekly Post Calendar</h3>
+      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem' }}>
+        <button className="add-post-btn" onClick={() => setShowAddPost(true)}>+ Add Post</button>
+        <button 
+          className="add-post-btn" 
+          onClick={saveToFirebase}
+          disabled={saving}
+          style={{ backgroundColor: saving ? '#ccc' : '#30cfe5' }}
+        >
+          {saving ? '💾 Saving...' : '💾 Save Posts'}
+        </button>
+      </div>
+
       <div className="calendar-container">
         <div className="calendar-left">
-          <button className="add-post-btn" onClick={() => setShowAddPost(true)}>+ Add Post</button>
           <div className="calendar-grid">
             {renderCalendarGrid()}
           </div>
